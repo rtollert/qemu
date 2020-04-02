@@ -423,7 +423,7 @@ set_mdic(E1000State *s, int index, uint32_t val)
     uint32_t addr = ((val & E1000_MDIC_REG_MASK) >> E1000_MDIC_REG_SHIFT);
 
     if ((val & E1000_MDIC_PHY_MASK) >> E1000_MDIC_PHY_SHIFT != 1) // phy #
-        val = s->mac_reg[MDIC] | E1000_MDIC_ERROR;
+        val = E1000_MDIC_ERROR;
     else if (val & E1000_MDIC_OP_READ) {
         DBGOUT(MDIC, "MDIC read reg 0x%x\n", addr);
         if (!(phy_regcap[addr] & PHY_R)) {
