@@ -1102,6 +1102,12 @@ mac_writereg(E1000State *s, int index, uint32_t val)
 static void
 set_rdt(E1000State *s, int index, uint32_t val)
 {
+    if (val == s->mac_reg[RDH]) {     /* Decrement RDT if it's too big */
+        if (val == 0) {
+            val = s->mac_reg[RDLEN] / sizeof(struct e1000_rx_desc);
+        }
+        val--;
+    }
     s->mac_reg[index] = val & 0xffff;
     if (e1000_has_rxbufs(s, 1)) {
         qemu_flush_queued_packets(qemu_get_queue(s->nic));
